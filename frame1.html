@@ -20,7 +20,39 @@
     <body>
         <svg width="550" height="550"></svg>
         <script>
-            
+            var svg = d3.select("svg"),
+                margin = 150,
+                width = svg.attr("width") - margin,
+                height = svg.attr("height") - margin;
+
+            svg.append("text")
+                .attr("transform", "translate(100,0)")
+                .attr("x", 100)
+                .attr("y", 50)
+                .attr("font-size", "24px")
+                .text("Horizontal Chart");
+
+            var xScale = d3.scaleLinear().range([0, width]),
+                yScale = d3.scaleLinear().range([height, 0]);
+
+            var g = svg.append("g")
+                .attr("transform", "translate(" + 100 + "," + 100 + ")");
+
+            d3.json("record_list_10.json", function (data) {
+                console.log(data);
+                xScale.domain([0, 60]);
+                yScale.domain([11, 1]);
+
+                g.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(xScale).ticks(60))
+                    .attr("font-size", "5px");
+
+                g.append("g")
+                    .call(d3.axisLeft(yScale).tickValues(d3.range(1, 11)));
+
+                // 그래프를 그리는 부분 (데이터를 기반으로 수평 그래프를 추가)
+            });
         </script>
     </body>
 </html>
