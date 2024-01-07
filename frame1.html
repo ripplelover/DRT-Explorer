@@ -4,7 +4,7 @@
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <style>
             body {
-                background-color: gray;
+                background-color: red;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -14,11 +14,21 @@
             svg {
                 background-color: white;
             }
+            .tooltip {
+            position: absolute;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            background: #fff;
+            border: 1px solid #ccc;
+            pointer-events: none;
+            opacity: 0;
+        }
         </style>
     </head>
 
     <body>
-        <svg width="550" height="550"></svg>
+        <svg width="900" height="800"></svg>
         <script>
             var svg = d3.select("svg"),
                 margin = 150,
@@ -27,7 +37,7 @@
 
             svg.append("text")
                 .attr("transform", "translate(100,0)")
-                .attr("x", 100)
+                .attr("x", 300)
                 .attr("y", 50)
                 .attr("font-size", "24px")
                 .text("Horizontal Chart");
@@ -36,22 +46,102 @@
                 yScale = d3.scaleLinear().range([height, 0]);
 
             var g = svg.append("g")
-                .attr("transform", "translate(" + 100 + "," + 100 + ")");
+                .attr("transform", "translate(" + 60 + "," + 100 + ")");
 
             d3.json("record_list_10.json", function (data) {
                 console.log(data);
-                xScale.domain([0, 60]);
+                xScale.domain([0, 100]);
                 yScale.domain([11, 1]);
 
                 g.append("g")
                     .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(xScale).ticks(60))
-                    .attr("font-size", "5px");
+                    .call(d3.axisBottom(xScale).ticks(100))
+                    .attr("font-size", "6px");
 
                 g.append("g")
                     .call(d3.axisLeft(yScale).tickValues(d3.range(1, 11)));
+                
+                var tooltip = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
 
-                // 그래프를 그리는 부분 (데이터를 기반으로 수평 그래프를 추가)
+                for (let i = 0; i < 10; i++) {
+                    g.append("line")
+                        .attr("x1", function (d) { return xScale(data[i].request_min); })
+                        .attr("y1", function (d) { return yScale(i + 1) - (height / 40); })
+                        .attr("x2", function (d) { return xScale(data[i].request_min); })
+                        .attr("y2", function (d) { return yScale(i + 1) + (height / 40); })
+                        .attr("stroke-width", 1)
+                        .attr("stroke", "red")
+                        .on("mouseover", function (event, d) {
+                        d3.select(this).attr("stroke", "orange");
+                        tooltip.transition().duration(200).style("opacity", .9);
+                        tooltip.html("Request Time: " + data[i].request_hour + ":" + data[i].request_min + "<br/>")
+                            .style("left", (d3.event.pageX + 5) + "px")
+                            .style("top", (d3.event.pageY - 35) + "px");
+                        })
+                        .on("mouseout", function (d) {
+                            d3.select(this).attr("stroke", "red");
+                            tooltip.transition().duration(500).style("opacity", 0);
+                        });
+                }
+                // d1_hour 과 d1_min을 d2_hour과 d2_min을 비교해서 d2 - d1을 구해서 그 차이만큼 라인을 긋는다.
+                // 라인은 기준선을 기준으로 차이만큼 수평으로 긋는다.
+                // 라인의 길이는 1분을 기준으로 한다.
+                for (let i = 0; i < 10; i++) {
+                    data[i].diff = data[i].d2_hour * 60 + data[i].d2_min - data[i].d1_hour * 60 - data[i].d1_min;
+                }
+
+                for (let i = 0; i < 10; i++) {
+                    g.append("line")
+                        .attr("x1", function (d) { return xScale(data[i].request_min); })
+                        .attr("y1", function (d) { return yScale(i + 1); })
+                        .attr("x2", function (d) { return xScale(data[i].request_min + data[i].diff); })
+                        .attr("y2", function (d) { return yScale(i + 1); })
+                        .attr("stroke-width", 1)
+                        .attr("stroke", "blue")
+                        .on("mouseover", function (event, d) {
+                        d3.select(this).attr("stroke", "orange");
+                        tooltip.transition().duration(200).style("opacity", .9);
+                        tooltip.html("D1 Time: " + data[i].d1_hour + ":" + data[i].d1_min + "<br/> D2 Time: " + data[i].d2_hour + ":" + data[i].d2_min + "<br/>")
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 35) + "px");
+                        })
+                        .on("mouseout", function (d) {
+                            d3.select(this).attr("stroke", "blue");
+                            tooltip.transition().duration(500).style("opacity", 0);
+                        });
+                }
+
+                // a1_hour과 a1_min을 a2_hour과 a2_min을 비교해서 a2 - a1을 구해서 그 차이만큼 라인을 긋는다.
+                // 라인은 기준선을 기준으로 차이만큼 수직으로 긋는다.
+                // 라인의 길이는 1분을 기준으로 한다.
+
+                for(let i = 0; i < 10; i++) {
+                    data[i].diff = data[i].a2_hour * 60 + data[i].a2_min - data[i].a1_hour * 60 - data[i].a1_min;
+                    data[i].diff2 = data[i].a1_hour * 60 + data[i].a1_min - 660;
+                }
+
+                for (let i = 0; i < 10; i++) {
+                    g.append("line")
+                        .attr("x1", function (d) { return xScale(data[i].diff2); })
+                        .attr("y1", function (d) { return yScale(i + 1) + (height / 200); })
+                        .attr("x2", function (d) { return xScale(data[i].diff2+data[i].diff); })
+                        .attr("y2", function (d) { return yScale(i + 1) + (height / 200); })
+                        .attr("stroke-width", 1)
+                        .attr("stroke", "red")
+                        .on("mouseover", function (event, d) {
+                        d3.select(this).attr("stroke", "orange");
+                        tooltip.transition().duration(200).style("opacity", .9);
+                        tooltip.html("A1 Time: " + data[i].a1_hour + ":" + data[i].a1_min + "<br/> A2 Time: " + data[i].a2_hour + ":" + data[i].a2_min + "<br/>")
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 35) + "px");
+                    })
+                    .on("mouseout", function (d) {
+                        d3.select(this).attr("stroke", "red");
+                        tooltip.transition().duration(500).style("opacity", 0);
+                    });
+                }
             });
         </script>
     </body>
