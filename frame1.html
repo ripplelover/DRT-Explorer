@@ -85,9 +85,7 @@
                             tooltip.transition().duration(500).style("opacity", 0);
                         });
                 }
-                // d1_hour 과 d1_min을 d2_hour과 d2_min을 비교해서 d2 - d1을 구해서 그 차이만큼 라인을 긋는다.
-                // 라인은 기준선을 기준으로 차이만큼 수평으로 긋는다.
-                // 라인의 길이는 1분을 기준으로 한다.
+
                 for (let i = 0; i < 10; i++) {
                     data[i].diff = data[i].d2_hour * 60 + data[i].d2_min - data[i].d1_hour * 60 - data[i].d1_min;
                 }
@@ -112,10 +110,6 @@
                             tooltip.transition().duration(500).style("opacity", 0);
                         });
                 }
-
-                // a1_hour과 a1_min을 a2_hour과 a2_min을 비교해서 a2 - a1을 구해서 그 차이만큼 라인을 긋는다.
-                // 라인은 기준선을 기준으로 차이만큼 수직으로 긋는다.
-                // 라인의 길이는 1분을 기준으로 한다.
 
                 for(let i = 0; i < 10; i++) {
                     data[i].diff = data[i].a2_hour * 60 + data[i].a2_min - data[i].a1_hour * 60 - data[i].a1_min;
