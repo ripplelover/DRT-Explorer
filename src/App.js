@@ -18,14 +18,14 @@ function App() {
             <nav style={{ height: '50px', background: 'white', backgroundColor: 'gray' }}>
                 <span style={{ marginLeft: '10px', fontSize: '1.5rem' }}>DRT-Explorer</span>
             </nav>
-            {/* <div>
+            <div>
                 <label htmlFor="sort">Sort : </label>
                 <select id="sort" onChange={handleSortChange} value={sortOption}>
                     <option value="none">none</option>
                     <option value="ascending">ascending</option>
                     <option value="descending">descending</option>
                 </select>
-            </div> */}
+            </div>
 
             <div style={{ display: 'flex', flexGrow: '1', backgroundColor: 'yellow' }}>
                 <RequestChart recorddata={jsonData} sortOption={sortOption} />

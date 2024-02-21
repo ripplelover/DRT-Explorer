@@ -13,28 +13,41 @@ const RequestChart = ({ recorddata, sortOption }) => {
         createVisualElements();
     }, []);
 
-    const createVisualElements = () => {
+    const setupChart = () => {
         let svg = d3.select(requestRef.current);
         let bw = containerRef.current.clientWidth;
         let bh = containerRef.current.clientHeight;
         let margin = { top: 100, right: 50, bottom: 50, left: 50 };
-
+    
         let width = bw - margin.left - margin.right;
         let height = bh - margin.top - margin.bottom;
-
+    
         svg.attr('width', bw).attr('height', bh);
-
-        svg
-            .append('text')
-            .attr('transform', 'translate(100,0)')
-            .attr('x', bw / 4)
-            .attr('y', 50)
-            .attr('font-size', '24px')
-            .style('text-anchor', 'center')
-            .text('Request View');
-
+    
         let xScale = d3.scaleLinear().range([0, width]);
         let yScale = d3.scaleLinear().range([height, 0]);
+    
+        xScale.domain([0, d3.max(recorddata, (d) => d.request_min)]);
+        yScale.domain([recorddata.length + 1, 0]);
+
+        return { svg, bw, bh, margin, width, height, xScale, yScale };
+
+    };
+
+    const createVisualElements = () => {
+
+        const { svg, bw, margin, height, xScale, yScale } = setupChart();
+
+
+        svg
+        .append('text')
+        .attr('transform', 'translate(100,0)')
+        .attr('x', bw / 4)
+        .attr('y', 50)
+        .attr('font-size', '24px')
+        .style('text-anchor', 'center')
+        .text('Request View');
+
 
 
         xScale.domain([0, 100]);
@@ -157,19 +170,8 @@ const RequestChart = ({ recorddata, sortOption }) => {
     };
 
     const updateVisualElements = () => {
-        let svg = d3.select(requestRef.current);
 
-        let bw = 950;
-        let bh = 700;
-        let margin = { top: 100, right: 50, bottom: 50, left: 50 };
-
-        let width = bw - margin.left - margin.right;
-        let height = bh - margin.top - margin.bottom;
-
-        let xScale = d3.scaleLinear().range([0, width]);
-        let yScale = d3.scaleLinear().range([height, 0]);
-        xScale.domain([0, d3.max(recorddata, (d) => d.request_min)]);
-        yScale.domain([81, 0]);
+        const { svg, yScale } = setupChart();
 
         let g = svg.select('g');
 
