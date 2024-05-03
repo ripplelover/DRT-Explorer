@@ -76,7 +76,9 @@ const DrtChart = ({ recorddata, timedata }) => {
                     .attr('y', yPosition + 2)
                     .attr('width', candidate.cost * 5)
                     .attr('height', unitH - 4)
-                    .attr('fill', 'skyblue');
+                    .attr('fill', 'skyblue')
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', 1);
 
                 for (let i = 0 ; i < rqLength ; i++) {
                     let req = candidate.rq[i];
