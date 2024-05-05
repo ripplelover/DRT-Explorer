@@ -6,66 +6,48 @@ import jsonData from './record_list.json';
 import nodeData from './SiouxFalls_node.csv';
 import DrtChart from './DrtChart';
 import drtData from './logs_20_47_25.json';
-import getResolvedCount from './resolvedCount';
+// import getResolvedCount from './resolvedCount';
 // import drtData from './logs_15_24_26.json';
 
 function App() {
-    const [sortOption, setSortOption] = useState('none');
-    const [currentTime, setCurrentTime] = useState(661);
+    // const [currentTime, setCurrentTime] = useState(661);
 
-    const { resolvedCount, requestCount } = getResolvedCount(drtData, currentTime);
+    // const { resolvedCount, requestCount } = getResolvedCount(drtData, currentTime);
 
-    const handleSortChange = (event) => {
-        setSortOption(event.target.value);
-    };
+    // const increaseTime = () => {
+    //     setCurrentTime(currentTime + 1);
+    // }
 
-    const increaseTime = () => {
-        setCurrentTime(currentTime + 1);
-    }
-
-    const decreaseTime = () => {
-        setCurrentTime(currentTime - 1);
-    }
+    // const decreaseTime = () => {
+    //     setCurrentTime(currentTime - 1);
+    // }
 
     return (
         <div className="App" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 
-            <nav style={{ height: '50px', background: 'white', backgroundColor: 'gray' }}>
-                <span style={{ marginLeft: '10px', fontSize: '1.5rem' }}>DRT-Explorer</span>
+            <nav style={{ display: 'flex', alignItems: 'center', height: '50px', backgroundColor: '#f8f9fa', color: '#343a40' }}>
+                <span style={{ marginLeft: '10px', fontSize: '1.7rem' }}>DRT-Analyzer</span>
             </nav>
-            <div>
-                <label htmlFor="sort">Sort : </label>
-                <select id="sort" onChange={handleSortChange} value={sortOption}>
-                    <option value="none">none</option>
-                    <option value="ascending">ascending</option>
-                    <option value="descending">descending</option>
-                </select>
-            </div>
 
-            <div style={{ display: 'flex', flexDirection: 'row', flexGrow: '1', height: 'calc(100% - 50px)' }}>
-                <div style={{ width: '50%', display: 'flex', flexDirection: 'column'}}>
-                    <div style={{ flex: 1, backgroundColor: 'white' }}>
-                        <RequestChart recorddata={jsonData} sortOption={sortOption} />
+            <div style={{ display: 'flex', flexDirection: 'row', flexGrow: '1', margin: '5px' }}>
+
+                <div style={{ width: '50%', display: 'flex', flexGrow: '1', flexDirection: 'column' }}>
+
+                    <div className='rel' style={{ flex: 1 }}>
+                        <RequestChart recorddata={jsonData} />
                     </div>
-                    <div style={{ flex: 1, backgroundColor: 'white' }}>
+
+                    <div className='rel' style={{ flex: 1 }}>
                         <NodeChart recorddata={jsonData} nodeData={nodeData} />
                     </div>
                 </div>
-                <div style={{ width: '50%', backgroundColor: 'white', display: 'flex', flexDirection: 'column'}}>
-                    <div>
-                        <label>  현재 Time : </label> 
-                        <input type="text" value={currentTime}/>
-                        <button onClick={decreaseTime}> - </button>
-                        <button onClick={increaseTime}> + </button>
-                        <label> resolved : </label>
-                        <span>{resolvedCount}</span>
-                        <label> / </label>
-                        <label> requested : </label>
-                        <span>{requestCount}</span>
-                        
-                        <h4></h4>
+
+                <div style={{ width: '50%', flexGrow: '1', display: 'flex', flexDirection: 'column' }}>
+
+                    <div className='rel' style={{ flexGrow: 1 }}>
+                        <DrtChart recorddata={drtData} />
                     </div>
-                    <DrtChart recorddata={drtData} timedata={currentTime} />
+
                 </div>
             </div>
 

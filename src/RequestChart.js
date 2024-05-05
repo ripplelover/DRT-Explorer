@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 
-const RequestChart = ({ recorddata, sortOption }) => {
+const RequestChart = ({ recorddata }) => {
+
+    const [sortOption, setSortOption] = useState('none');
     const requestRef = useRef();
     const containerRef = useRef();
     let tooltip;
@@ -17,16 +19,16 @@ const RequestChart = ({ recorddata, sortOption }) => {
         let svg = d3.select(requestRef.current);
         let bw = containerRef.current.clientWidth;
         let bh = containerRef.current.clientHeight;
-        let margin = { top: 100, right: 50, bottom: 50, left: 50 };
-    
+        let margin = { top: 20, right: 30, bottom: 40, left: 40 };
+
         let width = bw - margin.left - margin.right;
         let height = bh - margin.top - margin.bottom;
-    
+
         svg.attr('width', bw).attr('height', bh);
-    
+
         let xScale = d3.scaleLinear().range([0, width]);
         let yScale = d3.scaleLinear().range([height, 0]);
-    
+
         xScale.domain([0, d3.max(recorddata, (d) => d.request_min)]);
         yScale.domain([recorddata.length + 1, 0]);
 
@@ -38,17 +40,14 @@ const RequestChart = ({ recorddata, sortOption }) => {
 
         const { svg, bw, margin, height, xScale, yScale } = setupChart();
 
-
-        svg
-        .append('text')
-        .attr('transform', 'translate(100,0)')
-        .attr('x', bw / 4)
-        .attr('y', 50)
-        .attr('font-size', '24px')
-        .style('text-anchor', 'center')
-        .text('Request View');
-
-
+        // svg
+        //     .append('text')
+        //     .attr('transform', 'translate(100,0)')
+        //     .attr('x', bw / 4)
+        //     .attr('y', 50)
+        //     .attr('font-size', '24px')
+        //     .style('text-anchor', 'center')
+        //     .text('Request View');
 
         xScale.domain([0, 100]);
         yScale.domain([recorddata.length + 1, 0]);
@@ -217,9 +216,36 @@ const RequestChart = ({ recorddata, sortOption }) => {
         updateSort();
     }, [sortOption, recorddata]);
 
+    const handleSortChange = (event) => {
+        setSortOption(event.target.value);
+    };
+
     return (
-        <div style={{ display: 'flex', flexGrow: '1', height: '100%' }} ref={containerRef}>
-            <svg ref={requestRef}></svg>
+        <div className="content-view abs-fill" style={{ display: 'flex', flexDirection: 'column' }}>
+
+            <div class='content-header' style={{ display: 'flex', paddingLeft: '0.5rem' }} >
+
+                <div style={{ marginRight: '20px' }}>
+                    <span class='font-view-title font-dark'>Requests Distribution</span>
+                </div>
+
+                <div style={{ flexGrow: 1 }}></div>
+
+                <div style={{ marginRight: '1rem' }}>
+                    <label htmlFor="sort">Sort : </label>
+                    <select id="sort" onChange={handleSortChange} value={sortOption}>
+                        <option value="none">none</option>
+                        <option value="ascending">ascending</option>
+                        <option value="descending">descending</option>
+                    </select>
+                </div>
+            </div>
+
+            <div className='rel' style={{ flexGrow: 1 }}>
+                <div className='abs-fill' ref={containerRef}>
+                    <svg ref={requestRef}></svg>
+                </div>
+            </div>
         </div>
     );
 };

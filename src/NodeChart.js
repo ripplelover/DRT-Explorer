@@ -18,14 +18,14 @@ const NodeChart = ({ recorddata, nodeData }) => {
 
         svg.attr('width', bw).attr('height', bh);
 
-        svg
-            .append('text')
-            .attr('transform', 'translate(100,0)')
-            .attr('x', bw / 4)
-            .attr('y', 50)
-            .attr('font-size', '24px')
-            .style('text-anchor', 'center')
-            .text('Node-Link View');
+        // svg
+        //     .append('text')
+        //     .attr('transform', 'translate(100,0)')
+        //     .attr('x', bw / 4)
+        //     .attr('y', 50)
+        //     .attr('font-size', '24px')
+        //     .style('text-anchor', 'center')
+        //     .text('Node-Link View');
 
         d3.csv(nodeData).then((data) => {
             const minX = d3.min(data, (d) => d.X / 1000);
@@ -34,11 +34,11 @@ const NodeChart = ({ recorddata, nodeData }) => {
             const maxY = d3.max(data, (d) => d.Y / 1000);
 
             const xScaleFactor = (bw - 100) / (maxX - minX);
-            const yScaleFactor = (bh - 150) / (maxY - minY);
+            const yScaleFactor = (bh - 100) / (maxY - minY);
 
             data.forEach((d) => {
                 d.X = (d.X / 1000 - minX) * xScaleFactor + 50;
-                d.Y = (d.Y / 1000 - minY) * yScaleFactor + 100;
+                d.Y = (d.Y / 1000 - minY) * yScaleFactor + 50;
                 nodeDict[d.Node] = d;
             });
 
@@ -64,7 +64,7 @@ const NodeChart = ({ recorddata, nodeData }) => {
                 .append('circle')
                 .attr('cx', (d) => d.X)
                 .attr('cy', (d) => d.Y)
-                .attr('r', 10)
+                .attr('r', 15)
                 .attr('fill', '#abdee6');
 
             svg
@@ -74,17 +74,28 @@ const NodeChart = ({ recorddata, nodeData }) => {
                 .append('text')
                 .attr('class', 'node-text')
                 .attr('x', (d) => d.X)
-                .attr('y', (d) => d.Y + 3)
+                .attr('y', (d) => d.Y + 4)
                 .text((d) => d.Node)
-                .attr('font-size', '10px')
+                .attr('font-size', '12px')
                 .attr('fill', 'black')
                 .attr('text-anchor', 'middle');
         });
     };
 
     return (
-        <div style={{ display: 'flex', flexGrow: '1', height: '100%'}} ref={containerRef}>
-            <svg ref={nodeRef}></svg>
+        <div className="content-view abs-fill" style={{ display: 'flex', flexDirection: 'column' }}>
+
+            <div class='content-header' style={{ display: 'flex', paddingLeft: '0.5rem' }} >
+                <div style={{ marginRight: '20px' }}>
+                    <span class='font-view-title font-dark'>Transport Network</span>
+                </div>
+            </div>
+
+            <div className='rel' style={{ flexGrow: 1 }}>
+                <div className='abs-fill' ref={containerRef}>
+                    <svg ref={nodeRef}></svg>
+                </div>
+            </div>
         </div>
     );
 };
