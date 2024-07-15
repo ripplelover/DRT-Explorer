@@ -4,27 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2e4ca01-def1-46f8-ae9a-c8e980945c86" name="Changes" comment="" />
+    <list default="true" id="4d2b2f46-0c0f-4ee4-957c-c3a171999439" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
+  &quot;associatedIndex&quot;: 7
 }</component>
-  <component name="ProjectId" id="2fjLfvICAzAtQBvUFTGj2ku6bJr" />
+  <component name="ProjectId" id="2j5aiGxOf9AXdKcgMgMjRKSCF41" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.DRT_v4_240421.executor": "Run",
+    "Python.app.executor": "Run",
+    "Python.data_process.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/kdk20/drt_240428"
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/kdk20/drt_240428/data",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\kdk20\drt_240428\data" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\kdk20\drt_240428\data" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -35,11 +53,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a2e4ca01-def1-46f8-ae9a-c8e980945c86" name="Changes" comment="" />
-      <created>1714309646678</created>
+      <changelist id="4d2b2f46-0c0f-4ee4-957c-c3a171999439" name="Changes" comment="" />
+      <created>1720679516446</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1714309646678</updated>
+      <updated>1720679516446</updated>
     </task>
     <servers />
   </component>
